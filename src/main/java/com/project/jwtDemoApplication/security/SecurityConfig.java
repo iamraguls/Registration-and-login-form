@@ -25,21 +25,20 @@ public class SecurityConfig {
     }
 
     // authentication provider
-    // By userDetailsService load user record and give to authentication manager
+    // By userDetailsService load user record and checks the password
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider(){
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
-        daoAuthenticationProvider.setUserDetailsService(customerService);
+        daoAuthenticationProvider.setUserDetailsService(customerService); // Calls UserDetailsService (which is CustomerService in our case).
         return daoAuthenticationProvider;
     }
-
 
     // to validate login credentials are correct or not
     // it will perform authentication
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
+        return config.getAuthenticationManager(); // Delegates request to DaoAuthenticationProvider.
     }
 
     @Bean
